@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  web-server:
+    container_name: webserver
+    image: httpd:alpine
+    volumes:
+      - /opt/docker/data/webserver:/usr/local/apache2/htdocs
+    ports:
+      - "8080:80"
+    networks: 
+      - servers-net
+  # ftp-server:
+
+  samba-server:
+    container_name: sambaserver
+    image: stevepacker/samba-alpine
+    environment:
+      WORKGROUP   : WORKGROUP
+      SAMBA_NAME  : dockerSamba
+      SHARE_NAME  : public
+    volumes:
+      - /opt/docker/data/sambaserver:/data
+    ports:
+      - "137:137"
+      - "138:138"
+      - "139:139"
+      - "445:445"
+
+networks:
+  servers-net:
